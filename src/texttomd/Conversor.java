@@ -12,12 +12,14 @@ public class Conversor {
 		try {
 		BufferedReader br = new BufferedReader(new FileReader(args[0]));
 		BufferedWriter bw = new BufferedWriter(new FileWriter(args[0] + ".md"));
-		
+
+		String lineaAnterior = "";
 		String linea = "";
 		
 		while (linea != null) {
 		linea = br.readLine();
-		if (linea != null) {
+		if (linea != null && !linea.equals(lineaAnterior)) {
+			lineaAnterior = linea;
 		linea = marcaEncabezados(linea);
 		bw.write(linea + "\n");
 		}
@@ -45,6 +47,8 @@ public static String marcaEncabezados(String ln) {
 	}
 	return ln;
 }
+
+
 
 }
 
