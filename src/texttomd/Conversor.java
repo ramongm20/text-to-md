@@ -9,9 +9,15 @@ import java.io.IOException;
 public class Conversor {
 
 	public static void main(String[] args) {
-		try {
-		BufferedReader br = new BufferedReader(new FileReader(args[0]));
-		BufferedWriter bw = new BufferedWriter(new FileWriter(args[0] + ".md"));
+		Documento doc = new Documento();
+		rellena(doc, args[0]);
+		doc.marcaEncabezados();
+		escribe(doc, args[0]);
+				}
+
+public static void rellena(Documento doc, String nombreFichero) {
+	try {
+		BufferedReader br = new BufferedReader(new FileReader(nombreFichero));
 
 		String lineaAnterior = "";
 		String linea = "";
@@ -20,36 +26,30 @@ public class Conversor {
 		linea = br.readLine();
 		if (linea != null && !linea.equals(lineaAnterior)) {
 			lineaAnterior = linea;
-		linea = marcaEncabezados(linea);
-		bw.write(linea + "\n");
+		doc.add(linea);
 		}
 		}
 		br.close();
-		bw.close();
-		
-		System.out.println(args[0] + ".md creado con éxito.");
-
 		} catch (IOException ioe) {
-		System.out.println("Se ha producido un error de lectura/escritura");
+		System.out.println("Se ha producido un error de lectura");
 		System.err.println(ioe.getMessage());
 		}
+}
+public static void escribe(Documento doc, String nombreFichero) {
+	try {
+	BufferedWriter bw = new BufferedWriter(new FileWriter(nombreFichero + ".md"));
+	doc.forEach(ln -> {
+		try {
+			bw.write(ln + "\n");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
-public static String marcaEncabezados(String ln) {
-	if (ln.matches("^(\\d+\\.)+.*")) {
-		String marca = " ";
-		int punto = ln.indexOf('.');
-		do {
-			marca = "#" + marca;
-			punto = ln.indexOf('.', punto+1);
-		} while (punto>0 && punto != (ln.length()-1));
-		ln = marca + ln;
+	});
+	bw.close();
+	System.out.println(nombreFichero + ".md creado con éxito.");
+	} catch (IOException ioe) {
+	System.out.println("Se ha producido un error de escritura");
+	System.err.println(ioe.getMessage());
 	}
-	return ln;
 }
-
-
-
 }
-
-
