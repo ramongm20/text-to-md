@@ -19,13 +19,11 @@ public static void rellena(Documento doc, String nombreFichero) {
 	try {
 		BufferedReader br = new BufferedReader(new FileReader(nombreFichero));
 
-		String lineaAnterior = "";
 		String linea = "";
 		
 		while (linea != null) {
 		linea = br.readLine();
-		if (linea != null && !linea.equals(lineaAnterior)) {
-			lineaAnterior = linea;
+		if (linea != null && !doc.coincideÚltimaLn(linea)) {
 		doc.add(linea);
 		}
 		}

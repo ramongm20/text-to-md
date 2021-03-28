@@ -27,6 +27,9 @@ public class Documento extends ArrayList<String> {
 		return cadena.toString();
 	}
 
-	
+	public boolean coincideÚltimaLn(String ln) {
+		if (this.size()==0) return false;
+		return ln.equals(this.get(this.size()-1)) ? true: false;
+	}
 	
 }
