@@ -38,13 +38,7 @@ public static void rellena(Documento doc, String nombreFichero) {
 public static void escribe(Documento doc, String nombreFichero) {
 	try {
 	BufferedWriter bw = new BufferedWriter(new FileWriter(nombreFichero + ".md"));
-	doc.forEach(ln -> {
-		try {
-			bw.write(ln + "\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	});
+			bw.write(doc.toString());
 	bw.close();
 	System.out.println(nombreFichero + ".md creado con éxito.");
 	} catch (IOException ioe) {

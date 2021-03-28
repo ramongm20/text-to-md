@@ -20,4 +20,13 @@ public class Documento extends ArrayList<String> {
 		}
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder cadena = new StringBuilder();
+		this.forEach(ln -> cadena.append(ln + "\n"));
+		return cadena.toString();
+	}
+
+	
+	
 }
