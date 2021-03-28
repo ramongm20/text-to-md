@@ -9,13 +9,22 @@ public class Documento extends ArrayList<String> {
 	public void marcaEncabezados() {
 		for (int i=0; i<this.size(); i++) {
 		if (this.get(i).matches("^(\\d+\\.)+.*")) {
-			String marca = " ";
+			StringBuilder marca = new StringBuilder(" ");
 			int punto = this.get(i).indexOf('.');
 			do {
-				marca = "#" + marca;
+				marca.insert(0, '#');
 				punto = this.get(i).indexOf('.', punto+1);
 			} while (punto>0 && punto != (this.get(i).length()-1));
-			this.set(i, marca + this.get(i));
+			if (i>0) {
+			if (!this.get(i-1).isBlank())
+				marca.insert(0, '\n');
+			}
+			marca.append(this.get(i));
+			if ((i+1)<this.size()) {
+			if (!this.get(i+1).isBlank())
+				marca.append('\n');
+			}
+			this.set(i, marca.toString());
 		}
 		}
 	}
