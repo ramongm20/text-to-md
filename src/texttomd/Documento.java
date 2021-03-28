@@ -7,23 +7,23 @@ public class Documento extends ArrayList<String> {
 	private static final long serialVersionUID = 1L;
 	
 	public void marcaEncabezados() {
+		String regex = "^(\\d+\\.)+.*";
 		for (int i=0; i<this.size(); i++) {
-		if (this.get(i).matches("^(\\d+\\.)+.*")) {
+			String lnActiva = this.get(i);
+			String lnAnterior = getLn(i-1);
+			String lnSiguiente = getLn(i+1);
+		if (lnActiva.matches(regex) && lnSiguiente != null && !lnSiguiente.matches(regex)) {
 			StringBuilder marca = new StringBuilder(" ");
-			int punto = this.get(i).indexOf('.');
+			int punto = lnActiva.indexOf('.');
 			do {
 				marca.insert(0, '#');
-				punto = this.get(i).indexOf('.', punto+1);
-			} while (punto>0 && punto != (this.get(i).length()-1));
-			if (i>0) {
-			if (!this.get(i-1).isBlank())
+				punto = lnActiva.indexOf('.', punto+1);
+			} while (punto>0 && punto != (lnActiva.length()-1));
+			if (lnAnterior != null && !lnAnterior.isBlank())
 				marca.insert(0, '\n');
-			}
-			marca.append(this.get(i));
-			if ((i+1)<this.size()) {
-			if (!this.get(i+1).isBlank())
+			marca.append(lnActiva);
+			if (lnSiguiente != null && !lnSiguiente.isBlank())
 				marca.append('\n');
-			}
 			this.set(i, marca.toString());
 		}
 		}
@@ -39,6 +39,10 @@ public class Documento extends ArrayList<String> {
 	public boolean coincideÚltimaLn(String ln) {
 		if (this.size()==0) return false;
 		return ln.equals(this.get(this.size()-1)) ? true: false;
+	}
+
+	private String getLn(int i) {
+		return i>0 && i<(this.size()-1) ? this.get(i): null;
 	}
 	
 }
