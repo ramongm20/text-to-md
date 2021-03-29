@@ -1,6 +1,7 @@
 package texttomd;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Documento extends ArrayList<String> {
 
@@ -52,8 +53,14 @@ for (int i=0; i<coincidencias.length; i++) {
 		return cadena.toString();
 	}
 
-	public boolean coincideÚltimaLn(String ln) {
-		return this.size()>0 && ln.equals(this.get(this.size()-1)) ? true: false;
+	public void eliminaLnDuplicadas() {
+		Iterator<String> it = this.iterator();
+		String ln = "";
+		while (it.hasNext()) {
+			if (it.next().equals(ln))
+				it.remove();
+			ln = it.next();
+		}
 	}
 
 
