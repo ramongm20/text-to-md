@@ -12,6 +12,7 @@ public class Conversor {
 		Documento doc = new Documento();
 		rellena(doc, args[0]);
 		doc.marcaEncabezados();
+		doc.eliminaLnDuplicadas();
 		escribe(doc, args[0]);
 				}
 
@@ -23,7 +24,7 @@ public static void rellena(Documento doc, String nombreFichero) {
 		
 		while (linea != null) {
 		linea = br.readLine();
-		if (linea != null && !doc.coincideÚltimaLn(linea)) {
+		if (linea != null) {
 		doc.add(linea);
 		}
 		}
