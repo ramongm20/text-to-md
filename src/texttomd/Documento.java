@@ -13,35 +13,28 @@ public class Documento extends ArrayList<String> {
 for (int i=0; i<this.size(); i++) {
 	coincidencias[i] = this.get(i).matches(regex);
 }
-int principio = 0;
-int fin = 0;
-int p = 0;
-int f = 0;
+int diferenciaÍndices = 0;
 for (int i=0; i<coincidencias.length; i++) {
 	if(coincidencias[i]) {
-		p = i;
+		int inicioCoincidencia = i;
 		while (i < coincidencias.length && coincidencias[i]) {
 			i++;
-			f = i;
 		}
-		principio += p;
-		fin += f;
-		if (fin-principio == 1) {
-			String lnActiva = this.get(principio);
-			StringBuilder marca = new StringBuilder(" ");
-			marca.append(lnActiva);
-			int punto = lnActiva.indexOf('.');
+		int finCoincidencia = i;
+		if (finCoincidencia-inicioCoincidencia == 1) {
+			int índiceLnMarcada = diferenciaÍndices + inicioCoincidencia;
+			String ln = this.get(índiceLnMarcada);
+			StringBuilder marca = new StringBuilder(" " + ln);
+			int punto = ln.indexOf('.');
 			do {
 				marca.insert(0, '#');
-				punto = lnActiva.indexOf('.', punto+1);
-			} while (punto>0 && punto != (lnActiva.length()-1));
-			this.set(principio, marca.toString());
+				punto = ln.indexOf('.', punto+1);
+			} while (punto>0 && punto != (ln.length()-1));
+			this.set(índiceLnMarcada, marca.toString());
 		}
-		this.add(principio, "ppp");
-		fin++;
-		this.add(fin, "fff");
-		principio = principio + 2 - p;
-		fin = fin + 1 - f;
+		this.add(diferenciaÍndices + inicioCoincidencia, "ppp");
+		this.add(++diferenciaÍndices + finCoincidencia, "fff");
+		diferenciaÍndices++;
 	}
 }
 	}
