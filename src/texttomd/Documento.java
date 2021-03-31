@@ -41,9 +41,7 @@ for (int i=0; i<coincidencias.length; i++) {
 
 	@Override
 	public String toString() {
-		StringBuilder cadena = new StringBuilder();
-		this.forEach(ln -> cadena.append(ln + "\n"));
-		return cadena.toString();
+		return this.stream().reduce("", (s1, s2) -> s1 + "\n" + s2).toString();
 	}
 
 	public void eliminaLnDuplicadas() {
