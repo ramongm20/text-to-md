@@ -10,9 +10,10 @@ public class Documento extends ArrayList<String> {
 	public void marcaEncabezados() {
 		String regex = "(^[\\d]+)(\\.)([\\d\\.]*)(.*)";
 		boolean[] coincidencias = new boolean[this.size()];
-for (int i=0; i<this.size(); i++) {
+/*for (int i=0; i<this.size(); i++) {
 	coincidencias[i] = this.get(i).matches(regex);
-}
+}*/
+		this.forEach(ln -> coincidencias[this.indexOf(ln)] = ln.matches(regex));
 int diferenciaÍndices = 0;
 for (int i=0; i<coincidencias.length; i++) {
 	if(coincidencias[i]) {
