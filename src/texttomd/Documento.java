@@ -1,7 +1,7 @@
 package texttomd;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.ListIterator;
 
 public class Documento extends ArrayList<String> {
 
@@ -9,35 +9,31 @@ public class Documento extends ArrayList<String> {
 	
 	public void marcaEncabezados() {
 		String regex = "(^[\\d]+)(\\.)([\\d\\.]*)(.*)";
-		boolean[] coincidencias = new boolean[this.size()];
-/*for (int i=0; i<this.size(); i++) {
-	coincidencias[i] = this.get(i).matches(regex);
-}*/
-		this.forEach(ln -> coincidencias[this.indexOf(ln)] = ln.matches(regex));
-int diferenciaÍndices = 0;
-for (int i=0; i<coincidencias.length; i++) {
-	if(coincidencias[i]) {
-		int inicioCoincidencia = i;
-		while (i < coincidencias.length && coincidencias[i]) {
-			i++;
-		}
-		int finCoincidencia = i;
-		if (finCoincidencia-inicioCoincidencia == 1) {
-			int índiceLnMarcada = diferenciaÍndices + inicioCoincidencia;
-			String ln = this.get(índiceLnMarcada);
-			StringBuilder marca = new StringBuilder(" " + ln);
-			int punto = ln.indexOf('.');
-			do {
-				marca.insert(0, '#');
-				punto = ln.indexOf('.', punto+1);
-			} while (punto>0 && punto != (ln.length()-1));
-			this.set(índiceLnMarcada, marca.toString());
-		}
-		this.add(diferenciaÍndices + inicioCoincidencia, "ppp");
-		this.add(++diferenciaÍndices + finCoincidencia, "fff");
-		diferenciaÍndices++;
-	}
-}
+		this.add("");
+		ListIterator<String> li = this.listIterator();
+		do {
+			if (li.next().matches(regex)) {
+				int encabezados = 0;
+				if (!li.previous().equals(""))
+					li.add("");
+				while (li.hasNext() && li.next().matches(regex)) {
+					encabezados++;
+				}
+				li.previous();
+				if (encabezados == 1) {
+					li.previous();
+					String ln = li.next();
+					StringBuilder marca = new StringBuilder(" " + ln);
+					int punto = ln.indexOf('.');
+					do {
+						marca.insert(0, '#');
+						punto = ln.indexOf('.', punto+1);
+					} while (punto>0 && punto != (ln.length()-1));
+					li.set(marca.toString());
+				}
+				li.add("");
+			}
+		} while (li.hasNext());
 	}
 
 	@Override
@@ -46,13 +42,21 @@ for (int i=0; i<coincidencias.length; i++) {
 	}
 
 	public void eliminaLnDuplicadas() {
-		Iterator<String> it = this.iterator();
-		String ln = "";
-		while (it.hasNext()) {
-			if (it.next().equals(ln))
-				it.remove();
-			ln = it.next();
+		ListIterator<String> li = this.listIterator();
+		
+		while (li.hasNext()) {
+			if (li.next().equals("\n"))
+				li.set("");
 		}
+		li = this.listIterator();
+		
+		while (li.hasNext()) {
+			if (li.next().isBlank()) {
+				while (li.hasNext() && li.next().isBlank())
+					li.remove();
+			}
+		}
+
 	}
 
 
